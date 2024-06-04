@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Color>
+
+
+@section styles {
+    <style>
+
+        .my-color {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #cdcdcd;
+        }
+
+    </style>
+}
+<div class="card">
+    <div class="card-header">
+        <h5>Color</h5>
+        <a asp-action="Create" asp-controller="color" class="btn btn-success">
+            Add color +
+        </a>
+
+    </div>
+    <div class="card-block table-border-style">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th> Name</th>
+                        <th> HaxCode</th>
+                        <th> Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="body">
+
+                    <partial name="_Body" model="@Model" />
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section custom_js {
+    <script>
+
+        function removeColor(id,name){
+            var data = {
+                id:id,
+                name:name
+            }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url:'@Url.Action("Delete", "Color")',
+                        method:'POST',
+                        data:data,
+                        success: (response)=>{
+                            console.log(response)
+                            $(".body").html(response);
+                        },
+                        error : (err)=>{
+                            console.log(err)
+                        }
+                    })
+
+
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+
+    </script>
+
+
+}

@@ -1,0 +1,33 @@
+﻿@model Color;
+
+
+<div class="container mt-5">
+    <div class="card bg-info text-white">
+        <div class="card-header">
+            <h1>Info Color details</h1>
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> @Model.Name</p>
+            <p><strong>Hex Code:</strong> @Model.HaxCode</p>
+            <p><strong>ID:</strong> @Model.Id</p>
+            <br />
+            <p><strong>Created At:</strong> @Model.CreatedAt</p>
+            <p><strong>Deleted At:</strong> @Model.DeletedAt</p>
+            <p><strong>Updated At:</strong> @Model.UpdatedAt</p>
+            <p><strong>Createad By:</strong>@Model.CreatedBy</p>
+            <p><strong>Deleted By:</strong>@Model.DeletedBy</p>
+            <p><strong>Updated By:</strong>@Model.UpdatedBy</p>
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-light" asp-action="index" asp-controller="color">Back</a>
+        <a class="btn btn-warning" asp-action="edit" asp-controller="color" asp-route-id="Id">Edit</a>
+
+    </div>
+</div>
+
+
+
+
+
+
