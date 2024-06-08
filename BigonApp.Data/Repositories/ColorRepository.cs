@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace BigonApp.Data.Repositories
 {
-    internal class ColorRepository:Repository<Color> , IColorRepository
+    public class ColorRepository : Repository<Color>, IColorRepository
     {
-        public ColorRepository(AppDbContext context) : base(context) { }
-            
+        public ColorRepository(AppDbContext context) : base(context)
+        {
+        }
     }
 }

@@ -17,7 +17,7 @@
 <div class="card">
     <div class="card-header">
         <h5>Color</h5>
-        <a asp-action="Create" asp-controller="color" class="btn btn-success">
+        <a asp-action="Create" asp-controller="colors" class="btn btn-success">
             Add color +
         </a>
 
@@ -45,10 +45,10 @@
 @section custom_js {
     <script>
 
-        function removeColor(id,name){
+        function removeColor(id, name) {
             var data = {
-                id:id,
-                name:name
+                id: id,
+                name: name
             }
 
             Swal.fire({
@@ -63,14 +63,14 @@
                 if (result.isConfirmed) {
 
                     $.ajax({
-                        url:'@Url.Action("Delete", "Color")',
-                        method:'POST',
-                        data:data,
-                        success: (response)=>{
+                        url: '@Url.Action("Delete", "Color")',
+                        method: 'POST',
+                        data: data,
+                        success: (response) => {
                             console.log(response)
                             $(".body").html(response);
                         },
-                        error : (err)=>{
+                        error: (err) => {
                             console.log(err)
                         }
                     })
@@ -90,3 +90,4 @@
 
 
 }
+

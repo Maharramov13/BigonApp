@@ -19,7 +19,7 @@ namespace BigonApp.Data
             {
                 opt.UseSqlServer(Configuration.ConnectionString);
             });
-            services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<Infrastructure.Repositories.IColorRepository, Repositories.ColorRepository>();
         }
     }
 }

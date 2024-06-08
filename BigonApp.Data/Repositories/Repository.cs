@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BigonApp.Infrastructure.Repositories;
 using BigonApp.Infrastructure.Commons;
 using System.Linq.Expressions;
+using BigonApp.Infrastructure.Entities;
 
 namespace BigonApp.Data.Repositories
 {
@@ -23,21 +24,57 @@ namespace BigonApp.Data.Repositories
         }
         public DbSet<T> Table => _context.Set<T>();
 
-        public async Task<bool> AddAsync(T entity)
+        public T Add(T model)
         {
-            var result = await Table.AddAsync(entity);
-            return result.State == EntityState.Added;
+            throw new NotImplementedException();
+        }
+
+        public T Edit(T model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Get(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<T> GetAll()
         {
-            var datas = Table.AsEnumerable();
-            return datas;
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetWhere(Expression<Func<T, bool>> expression)
+        public T Remove(T model)
         {
-           return Table.Where(expression);
+            throw new NotImplementedException();
         }
+
+        //public async Task<bool> AddAsync(T entity)
+        //{
+        //    var result = await Table.AddAsync(entity);
+        //    return result.State == EntityState.Added;
+        //}
+
+        //public IEnumerable<T> Get()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<T> GetAll()
+        //{
+        //    var datas = Table.AsEnumerable();
+        //    return datas;
+        //}
+
+        //public IEnumerable<T> GetWhere(Expression<Func<T, bool>> expression)
+        //{
+        //   return Table.Where(expression);
+        //}
+        //public IEnumerable<T>Get(Expression<Func<T, bool>> expression)
+        //{
+        //    return Table.AsEnumerable();
+        //}
+
+
     }
 }

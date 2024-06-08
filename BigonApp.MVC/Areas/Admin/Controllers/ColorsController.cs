@@ -1,7 +1,13 @@
-﻿using BigonApp.Data.Contexts;
+﻿using BigonApp.Business.Modules.ColorsModules.Commands.ColorsAddCommand.ColorsEditCommand;
+using BigonApp.Business.Modules.ColorsModules.Commands.ColorsRemoveCommand;
+using BigonApp.Business.Modules.ColorsModules.Queries.ColorsGet;
+using BigonApp.Business.Modules.ColorsModules.Queries.ColorsGetAll;
+using BigonApp.Data.Contexts;
 using BigonApp.Infrastructure.Entities;
 using BigonApp.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace BigonApp.MVC.Areas.Admin.Controllers
 {
@@ -9,33 +15,41 @@ namespace BigonApp.MVC.Areas.Admin.Controllers
     public class ColorsController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly IColorRepository _repository;
 
-        public ColorsController(AppDbContext context, IColorRepository repository)
+        private readonly IMediator _mediator;
+
+        public ColorsController(AppDbContext context, IMediator mediator)
         {
             _db = context;
-            _repository = repository;
+            _mediator = mediator;
         }
+
+
+
         [HttpGet]
-        public IActionResult Index()
+        public async Task <IActionResult>Index(ColorsGetAllRequest request)
         {
-            var colors = _repository.GetWhere(x => x.DeletedAt == null);
-            return View(colors);
+            var response=await _mediator.Send(request);
+           return View(response);
         }
+
+
+
+
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Color color)
+        public async Task<IActionResult> Create(ColorsAddRequest request)
         {
-            color.CreatedAt = DateTime.Now;
-            _db.Colors.Add(color);
-            _db.SaveChanges();
-
+           
+            await _mediator.Send(request);
             return RedirectToAction(nameof(Index));
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -57,40 +71,27 @@ namespace BigonApp.MVC.Areas.Admin.Controllers
 
 
 
-        public IActionResult Edit(int? id)
+        public async Task< IActionResult> Edit(ColorsGetByIdRequest request)
         {
-            if (id == null) return NotFound();
-            var color = _db.Colors.FirstOrDefault(x => x.Id == id);
-            return View(color);
+            var response = await _mediator.Send(request);
+            return View(response);
         }
-        [HttpPost]
-        public IActionResult Edit(Color color)
-        {
-            if (color == null) return NotFound();
 
-            var editedColor = _db.Colors.Find(color.Id);
-            if (editedColor != null)
-            {
-                editedColor.Name = color.Name;
-                editedColor.HaxCode = color.HaxCode;
-                color.UpdatedAt = DateTime.Now;
-                color.UpdatedBy = color.Id;
-                _db.SaveChanges();
-            }
-            else
-            {
-                return NotFound();
-            }
+        [HttpPost]
+        public async Task < IActionResult> Edit(ColorsEditRequest request)
+        {
+            await _mediator.Send(request);
+           
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int id)
+        public async Task< IActionResult> Details(ColorsGetByIdRequest request)
         {
-            var getColor = _db.Colors.Find(id);
+            var response=await _mediator.Send(request);
 
 
 
-            return View(getColor);
+            return View(response);
         }
 
         //public IActionResult Reflesh()
@@ -99,27 +100,11 @@ namespace BigonApp.MVC.Areas.Admin.Controllers
         //}
 
 
-        //public IActionResult Delete(int id)
-        //{
-        //    var data = _db.Colors.Find(id);
-        //    if (data == null)
-        //    {
-        //        return Json(new
-        //        {
-        //            error = true,
-        //            message = "Data not found"
-        //        });
-        //    }
-
-        //    _db.Colors.Remove(data);
-        //    _db.SaveChanges();
-
-        //    return Ok(new
-        //    {
-        //        error = false,
-        //        message = "Data deleted"
-        //    });
-
-        //}
+        public async Task<IActionResult> Delete(ColorsRemoveRequest request)
+        {
+            var response=await _mediator.Send(request);
+            return PartialView("_Body",response);
+            
+        }
     }
 }

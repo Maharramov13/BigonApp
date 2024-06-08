@@ -11,12 +11,17 @@ using System.Threading.Tasks;
 namespace BigonApp.Infrastructure.Repositories
 {
     public interface IRepository<T>
-        where T : BaseEntity
+        where T : class
     {
-        DbSet<T> Table { get; }
-        Task<bool> AddAsync(T entity);
+       
+        public IEnumerable<T> GetAll();
 
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetWhere(Expression<Func<T,bool>> expression);
+        public IEnumerable<T> Get(Func<object, bool> value);
+
+        public T Add(T model);
+
+        public T Edit(T model);
+
+        public T Remove(T model);
     }
 }
